@@ -6,8 +6,12 @@
             dark
         >
             <v-layout wrap>
-                <v-flex xs12 class="d-flex justify-center">
+                <v-flex xs4 class="d-flex justify-center">
+                </v-flex>
+                <v-flex xs4 class="d-flex justify-center">
                     <v-icon>fastfood</v-icon>
+                </v-flex>
+                <v-flex xs4 class="d-flex justify-center">
                 </v-flex>
             </v-layout>
         </v-app-bar>

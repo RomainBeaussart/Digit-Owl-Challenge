@@ -13,7 +13,8 @@
         >
             <v-card
                 class="mx-auto"
-                max-width="400"
+                width="400px"
+                style="height: fit-content !important"
             >
                 <v-img
                     class="white--text align-end"
