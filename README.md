@@ -1,4 +1,4 @@
-# website
+# Digit'Owl Challenge
 
 ## Project setup
 ```
