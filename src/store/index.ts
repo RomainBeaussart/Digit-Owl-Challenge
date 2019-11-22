@@ -3,23 +3,13 @@ import Vuex from 'vuex';
 
 Vue.use(Vuex);
 
-var store: {
-    state: {
-        command: Array<any>
-    },
-    mutations: {
-        add: any,
-        remove: any
-    },
-    actions: any,
-    modules: any
-} = {
+var store: any = {
     state: {
         command: []
     },
     mutations: {
         add(state: any, add: any) {
-            let item = state.command.find((element: any) => element.short_name === add.short_name 
+            let item = state.command.find((element: any) => element.short_name === add.short_name
                 && element.portion_name === add.portion_name)
             if (item){
                 item.quantity ++
