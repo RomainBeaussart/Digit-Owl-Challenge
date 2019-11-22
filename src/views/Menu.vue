@@ -1,20 +1,27 @@
 <template>
     <v-container fluid>
         <v-layout wrap>
-            <v-flex xs12 class="d-flex justify-center headline">
+            <v-flex xs4 class="d-flex headline">
                 <v-btn
-                    class="mx-2"
-                    fab dark small
+                    icon big
+                    x-large
                     color="primary"
                     mr-5
                     @click="back()"
                 >
                     <v-icon dark>keyboard_arrow_left</v-icon>
                 </v-btn>
+            </v-flex>
+            <v-flex xs4 class="d-flex justify-center display-2">
                 {{ category.name }}
             </v-flex>
-            <v-flex xs12 class="d-flex justify-center">
-                {{ category.special_instructions }}
+            <v-flex xs4 class="d-flex justify-center headline">
+            </v-flex>
+            
+            <v-flex xs12 mt-5 class="d-flex justify-center" v-if="category.special_instructions">
+                <v-alert type="primary" max-width="90%">
+                    {{ format(category.special_instructions) }}
+                </v-alert>
             </v-flex>
             <v-flex
                 v-for="menu in menuItems"
@@ -27,16 +34,14 @@
                     class="mx-auto align-self-center"
                     min-width="400"
                     max-width="400"
-                    style="height: fit-content !important"
                 >
                     <v-img
                         v-if="menu.image_present"
                         class="white--text align-end"
-                        height="200px"
+                        height="250px"
                         :src="'https://www.davidchuschinabistro.com/images/' + menu.short_name + '.jpg'"
-                        @click="getImage(category.name)"
                     >
-                        <v-card-title>{{ menu.name }}
+                        <v-card-title style="background: rgba(0, 0, 0, 0.3)">{{ menu.name }}
                         </v-card-title>
                     </v-img>
 
@@ -45,15 +50,45 @@
                     </v-card-title>
 
                     <v-card-text class="text--primary">
-                        {{ menu.description }}
+                        {{ format(menu.description) }}
                     </v-card-text>
 
-                    <v-card-actions>
-                       $ {{ menu.price_small ? menu.price_small + ' - ' : '' }} {{ menu.price_large }}
+                    <v-card-actions v-if="!menu.price_small">
+                        ${{ menu.price_large }}
+                        <v-btn icon small
+                            @click="add(menu)"
+                        >
+                            <v-icon>add</v-icon>
+                        </v-btn><br />
                        <v-spacer></v-spacer>
                        <v-avatar color="primary" size="48">
                             <span class="white--text headline">{{ menu.short_name }}</span>
                         </v-avatar>
+                    </v-card-actions>
+
+                    <v-card-actions v-else>
+                        <v-layout wrap>
+                            <v-flex xs6>
+                                <span class="font-weight-black">Price</span><br />
+                                    {{ menu.small_portion_name }}: ${{ menu.price_small }} 
+                                    <v-btn icon small
+                                        @click="addSmall(menu)"
+                                    >
+                                        <v-icon>add</v-icon>
+                                    </v-btn><br />
+                                    {{ menu.large_portion_name }}: ${{ menu.price_large }}
+                                    <v-btn icon small 
+                                        @click="add(menu)"
+                                    >
+                                        <v-icon>add</v-icon>
+                                    </v-btn><br />
+                            </v-flex>
+                            <v-flex xs6 class="d-flex align-center justify-end">
+                                <v-avatar color="primary" size="48">
+                                    <span class="white--text headline">{{ menu.short_name }}</span>
+                                </v-avatar>
+                            </v-flex>
+                        </v-layout>
                     </v-card-actions>
                 </v-card>
             </v-flex>
@@ -71,6 +106,7 @@ export default class Menu extends Vue {
     category: any = {
         name: ''
     }
+
     menuItems: any = []
 
     get id() {
@@ -80,7 +116,6 @@ export default class Menu extends Vue {
     async mounted() {
         await axios.get('https://mikrethor-resto-course5.herokuapp.com/menu_items.json?category=' + this.id)
         .then((response) => {
-            console.log(response)
             this.category = response.data.category
             this.menuItems = response.data.menu_items
         })
@@ -90,6 +125,28 @@ export default class Menu extends Vue {
         this.$router.push({
             name: "home"
         });
+    }
+
+    format(text: string) {
+        return text.charAt(0).toUpperCase() + text.slice(1)
+    }
+
+    addSmall(menu: any) {
+        this.$store.commit('add', {
+            name: menu.name,
+            short_name: menu.short_name,
+            price: menu.price_small,
+            portion_name: menu.small_portion_name
+        })
+    }
+
+    add(menu: any) {
+        this.$store.commit('add', {
+            name: menu.name,
+            short_name: menu.short_name,
+            price: menu.price_large,
+            portion_name: menu.large_portion_name
+        })
     }
 
 }

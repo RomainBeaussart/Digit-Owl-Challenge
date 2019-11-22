@@ -1,8 +1,11 @@
 <template>
   <v-container fluid>
     <v-layout wrap xs12>
-        <v-flex xs12 class="d-flex justify-center display-2">
-            Welcome to Digit'Owl Restore
+        <v-flex xs12 my-5 class="d-flex justify-center display-2">
+            Welcome to Digit'Owl Restaurant
+        </v-flex>
+        <v-flex xs12 my-5 class="d-flex justify-center title">
+            Please select your category
         </v-flex>
         <v-flex
             v-for="category in categories"
@@ -15,34 +18,34 @@
                 class="mx-auto"
                 width="400px"
                 style="height: fit-content !important"
+                @click="openMenu(category.short_name)"
             >
                 <v-img
                     class="white--text align-end"
-                    height="200px"
+                    height="250px"
                     :src="images[category.short_name]+ '?auto=compress&cs=tinysrgb&dpr=2&h=400&w=800'"
-                    @click="getImage(category.name)"
                 >
-                    <v-card-title>{{ category.name }}
-                        <v-tooltip bottom v-if="category.special_instructions" :offset-overflow="true" max-width="400">
-                        <template v-slot:activator="{ on }">
-                            <v-icon color="primary" v-on="on">info</v-icon>
-                        </template>
-                            <span> {{ category.special_instructions }}</span>
-                        </v-tooltip>
-                    </v-card-title>
+                    <v-card-title style="background: rgba(0, 0, 0, 0.3)">{{ category.name }}</v-card-title>
                 </v-img>
 
                 <v-card-text class="text--primary">
+                    
                 </v-card-text>
 
                 <v-card-actions>
                     <v-btn
                         color="primary"
                         text
-                        @click="openMenu(category.short_name)"
                     >
-                        Explore
+                        Go <v-icon>keyboard_arrow_right</v-icon>
                     </v-btn>
+                    <v-spacer/>
+                    <v-tooltip bottom v-if="category.special_instructions" :offset-overflow="true" max-width="400">
+                        <template v-slot:activator="{ on }">
+                            <v-icon color="primary" v-on="on">info</v-icon>
+                        </template>
+                        <span> {{ format(category.special_instructions) }}</span>
+                    </v-tooltip>
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -101,6 +104,10 @@ export default class Home extends Vue {
                 id: id,
             }
         });
+    }
+
+    format(text: string) {
+        return text.charAt(0).toUpperCase() + text.slice(1)
     }
 }
 </script>
