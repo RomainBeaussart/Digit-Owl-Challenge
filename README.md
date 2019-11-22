@@ -25,7 +25,9 @@ $ npm run serve
 And go to [**localhost:8080**](http://localhost:8080/)
 
 ## Package used
+
 * [**Vue.js**](https://vuejs.org/)
 * [**Vuetify**](https://vuetifyjs.com/en/)
+* [**VueX**](https://vuex.vuejs.org/)
 * [**Axios**](https://github.com/axios/axios)
 * [**Material.io**](https://material.io/)
