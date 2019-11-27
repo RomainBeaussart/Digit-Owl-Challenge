@@ -1,6 +1,7 @@
 module.exports = {
-  "lintOnSave": false,
-  "transpileDependencies": [
-    "vuetify"
+  lintOnSave: false,
+  publicPath: process.env.NODE_ENV === 'production' ? '/DigitOwl/' : '/',
+  transpileDependencies: [
+    'vuetify'
   ]
 }
